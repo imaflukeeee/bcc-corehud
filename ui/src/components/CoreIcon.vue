@@ -31,11 +31,11 @@ const ICON_IMAGE_MAP = {
   stress: { default: 'cores/icon/brain.png' },
   messages: { default: 'cores/icon/letter.png' },
   voice: { default: 'cores/icon/talking.png' },
-  temperature: {
+  /*temperature: {
     cold: 'cores/icon/temp_cold.png',
     hot: 'cores/icon/temp_hot.png',
     default: 'cores/icon/temp_cold.png'
-  },
+  },*/
   temperature_value: {
     cold: 'cores/icon/temp_cold.png',
     hot: 'cores/icon/temp_hot.png',

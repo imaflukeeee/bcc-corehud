@@ -1895,33 +1895,31 @@ CreateThread(function()
 				end
 
 				local coords = GetEntityCoords(ped)
-				local worldTemp = tonumber(GetTemperatureAtCoords(coords.x, coords.y, coords.z)) or 0.0
-				if Config.TemperatureColdThreshold and worldTemp <= Config.TemperatureColdThreshold then
-					currentTemperatureEffect = 'cold'
-				elseif Config.TemperatureHotThreshold and worldTemp >= Config.TemperatureHotThreshold then
-					currentTemperatureEffect = 'hot'
-				else
-					currentTemperatureEffect = nil
-				end
-				local tmin, tmax = Config.TemperatureMin, Config.TemperatureMax
-				if tmin > tmax then tmin, tmax = tmax, tmin end
-				local tspan = tmax - tmin
-				local tempPct = (tspan < 0.001) and 50.0 or clamp(((worldTemp - tmin) / tspan) * 100.0, 0.0, 100.0)
+                local worldTemp = tonumber(GetTemperatureAtCoords(coords.x, coords.y, coords.z)) or 0.0
 
-				local tempInner, tempOuter, tempInside, tempNext = nil, nil, nil, nil
-				local tempValInner, tempValOuter, tempValNext = nil, nil, nil
-				local showTemperatureAlways = Config.AlwaysShowTemperature == true
-				local tempEffect = currentTemperatureEffect
+                -- 1. เช็คสถานะ ร้อน/หนาว (เพื่อกำหนดรูปไอคอน)
+                if Config.TemperatureColdThreshold and worldTemp <= Config.TemperatureColdThreshold then
+                    currentTemperatureEffect = 'cold'
+                elseif Config.TemperatureHotThreshold and worldTemp >= Config.TemperatureHotThreshold then
+                    currentTemperatureEffect = 'hot'
+                else
+                    currentTemperatureEffect = nil -- อากาศปกติ
+                end
 
-				if tempEffect or showTemperatureAlways then
-					tempInner, tempOuter = 15, 99
-					tempInside = tempEffect
-				end
+                -- 2. ตั้งค่าตัวแปร (ปิดตัวเก่า, เปิดตัวใหม่)
+                
+                -- [ปิด] ตัวแปรของ temperature (แบบเก่า) ให้เป็น nil ทั้งหมด
+                local tempInner, tempOuter, tempInside, tempNext = nil, nil, nil, nil
 
-				if tempPct ~= nil and (tempEffect or showTemperatureAlways) then
-					tempValInner, tempValOuter = 15, 99
-					tempValNext = tostring(round(worldTemp)) .. '°'
-				end
+                -- [เปิด] ตัวแปรของ temperature_value (แบบมีตัวเลข)
+                -- กำหนดให้แสดงผลตลอดเวลา (15, 99)
+                local tempValInner, tempValOuter = 15, 99
+                
+                -- สร้างตัวแปรใหม่สำหรับส่งค่า effect (hot/cold) ไปเปลี่ยนรูป
+                local tempValInside = currentTemperatureEffect
+                
+                -- ส่งตัวเลขอุณหภูมิ
+                local tempValNext = tostring(round(worldTemp)) .. '°'
 
 				local horseDirtInner, horseDirtOuter, horseDirtInside = nil, nil, nil
 				if horse ~= 0 then
@@ -2129,13 +2127,15 @@ CreateThread(function()
 					outerhorse_dirt               = horseDirtOuter,
 					effect_horse_dirt_inside      = horseDirtInside,
 
-					innertemperature              = tempInner,
-					outertemperature              = tempOuter,
-					effect_temperature_inside     = tempInside,
+					innertemperature              = nil,
+                    outertemperature              = nil,
+                    effect_temperature_inside     = nil,
+                    effect_temperature_next       = nil,
 
 					innertemperature_value        = tempValInner,
-					outertemperature_value        = tempValOuter,
-					effect_temperature_value_next = tempValNext,
+                    outertemperature_value        = tempValOuter,
+                    effect_temperature_value_inside = tempValInside, -- [เพิ่มบรรทัดนี้] เพื่อส่ง effect ไปเปลี่ยนรูป
+                    effect_temperature_value_next = tempValNext,
 
 					innerclean_stats              = cleanInner,
 					outerclean_stats              = cleanOuter,

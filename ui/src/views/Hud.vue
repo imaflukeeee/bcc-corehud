@@ -81,7 +81,7 @@ const SLOT_ORDER = Object.freeze([
   'horse_health',
   'horse_stamina',
   'horse_dirt',
-  'temperature',
+  //'temperature',
   'temperature_value'
 ])
 
