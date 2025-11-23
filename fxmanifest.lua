@@ -34,8 +34,8 @@ server_script {
 ui_page 'web/index.html'
 
 files {
-    "web/index.html",
-    "web/**/*"
+    "ui/index.html",
+    "ui/**/*"
 }
 
 version '1.9.0'
