@@ -4,7 +4,6 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 game 'rdr3'
 lua54 'yes'
 
-
 author 'BCC Scripts'
 description 'Redm, NUI, Vuejs boilerplate'
 
@@ -34,8 +33,8 @@ server_script {
 ui_page 'web/index.html'
 
 files {
-    "ui/index.html",
-    "ui/**/*"
+    "web/index.html",
+    "web/**/*"
 }
 
 version '1.9.0'
