@@ -1,0 +1,22 @@
+---------------------------------- ENGLISH -------------------------------------------
+Locales["ro_lang"] = {
+    hud_save_layout = "Salvează aranjamentul",
+    hud_clean_warning = "Miroși îngrozitor. Găsește o baie înainte să observe ceilalți.",
+    hud_hunger_warning = "Ești înfometat. Mănâncă ceva cât mai curând.",
+    hud_thirst_warning = "Ești deshidratat. Bea ceva înainte să fie mai rău.",
+    hud_needs_refilled = "Nevoile tale au fost refăcute.",
+    hud_temp_warning_overheat = "Nu poți sta în soare, găsește umbră!",
+    hud_fx_cleared = "Efectele vizuale au fost oprite.",
+    hud_voice_mode_whisper = "Mod voce: Șoaptă",
+    hud_voice_mode_normal = "Mod voce: Normal",
+    hud_voice_mode_shout = "Mod voce: Strigăt",
+    hud_need_hunger_low = "Înfometat",
+    hud_need_hunger_overfed = "Ești deja sătul.",
+    hud_need_thirst_low = "Deshidratat",
+    hud_need_stress_low = "Stresat",
+    hud_bleed_warning = "Sângerezi! Bandajează-te.",
+    smoke = "Fumeaza",
+    drop = "Arunca",
+    change = "Schimba",
+    Chewing = "Mesteca",
+}
