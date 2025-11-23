@@ -10,12 +10,12 @@ fs.readFile('../fxmanifest.lua', 'utf8', function (err, data) {
     let expr = /files \{([^}]*)\}/g
     let replace = 
 `files {
-    "ui/index.html",
-    "ui/**/*"
+    "web/index.html",
+    "web/**/*"
 }`
 
     let to_file = 'ui/shim.html';
-    let from_file = 'ui/index.html'
+    let from_file = 'web/index.html'
 
     if (process.env.NODE_ENV === 'development') {
         replace = 
@@ -23,7 +23,7 @@ fs.readFile('../fxmanifest.lua', 'utf8', function (err, data) {
     "ui/shim.html"
 }`
 
-        to_file = 'ui/index.html';
+        to_file = 'web/index.html';
         from_file = 'ui/shim.html';
     }
 
