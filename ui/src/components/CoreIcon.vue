@@ -382,7 +382,7 @@ const coreFillStyle = computed(() => {
   }
   return {
     backgroundColor: backgroundColor.value,
-    boxShadow: `inset 0 0 0 1.4px ${borderColor.value}`,
+    boxShadow: `inset 0 0 0 1.85px ${borderColor.value}`,
     color: iconColor.value
   }
 })
@@ -450,8 +450,8 @@ const statValue = computed(() => {
 <style scoped>
 .core-slot {
   position: relative;
-  width: 2.65rem;
-  height: 2.65rem;
+  width: 3.5rem;
+  height: 3.5rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -507,7 +507,7 @@ const statValue = computed(() => {
 
 .core-fill {
   position: absolute;
-  inset: 6px;
+  inset: 8px;
   border-radius: 50%;
   overflow: hidden;
   transition: background 0.3s ease;
@@ -516,7 +516,7 @@ const statValue = computed(() => {
 .core-icon {
   position: relative;
   z-index: 1;
-  font-size: 1.45rem;
+  font-size: 1.92rem;
   color: var(--icon-color);
   text-shadow: var(--icon-shadow);
 }
@@ -524,8 +524,8 @@ const statValue = computed(() => {
 .core-icon-img {
   position: relative;
   z-index: 1;
-  width: 2.65rem;
-  height: 2.65rem;
+  width: 3.5rem;
+  height: 3.5rem;
   object-fit: contain;
   box-shadow: var(--icon-shadow);
   border-radius: 50%;
@@ -539,7 +539,7 @@ const statValue = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.58rem;
+  font-size: 0.77rem;
   font-weight: 600;
   letter-spacing: 0.03em;
   color: #e2e8f0;
@@ -550,9 +550,9 @@ const statValue = computed(() => {
 .core-side-label {
   position: absolute;
   top: 50%;
-  left: calc(100% + 0.45rem);
+  left: calc(100% + 0.6rem);
   transform: translateY(-50%);
-  font-size: 0.62rem;
+  font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: #e2e8f0;
@@ -567,8 +567,8 @@ const statValue = computed(() => {
   filter: none;
   box-shadow: none;
   border-radius: 0.75rem;
-  min-width: 5.25rem;
-  min-height: 5.25rem;
+  min-width: 6.94rem;
+  min-height: 6.94rem;
 }
 
 .core-slot--logo .core-gauge,
@@ -578,8 +578,8 @@ const statValue = computed(() => {
 }
 
 .core-slot--logo-image .core-icon-img {
-  width: 5.25rem;
-  height: 5.25rem;
+  width: 6.94rem;
+  height: 6.94rem;
   border-radius: 0.75rem;
   box-shadow: none;
 }
@@ -589,20 +589,20 @@ const statValue = computed(() => {
 }
 
 .core-slot--bleed .core-icon-img {
-  width: 2rem;
-  height: 2rem;
+  width: 2.64rem;
+  height: 2.64rem;
 }
 
 .core-slot--stat {
   width: auto;
   height: auto;
-  min-height: 1.9rem;
+  min-height: 2.52rem;
   padding: 0;
   border-radius: 0;
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.45rem;
+  gap: 0.6rem;
   background: transparent;
   border: none;
   box-shadow: none;
@@ -622,8 +622,8 @@ const statValue = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 2.32rem;
+  height: 2.32rem;
 }
 
 .stat-icon-img {
@@ -635,13 +635,13 @@ const statValue = computed(() => {
 }
 
 .stat-icon {
-  font-size: 1.35rem;
+  font-size: 1.79rem;
   color: #f1f5f9;
 }
 
 .stat-value {
   font-family: 'Chineserok', 'Chineserok', 'Noto Sans', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.58rem;
   font-weight: 700;
   letter-spacing: 0.015em;
   color: #f1f5f9;
