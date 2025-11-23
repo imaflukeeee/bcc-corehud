@@ -14,14 +14,23 @@ const props = defineProps({
   meta: { type: Object, default: null }
 })
 
-const SPECIAL_TYPES = new Set(['voice', 'temperature', 'temperature_value', 'messages'])
+// [แก้ไข] เพิ่ม 5 หมวดนี้ลงไป เพื่อให้เป็นแบบ "ไม่มีหลอด" (Icon Only)
+const SPECIAL_TYPES = new Set([
+  'voice', 'temperature', 'temperature_value', 'messages',
+  'horse_health', 'horse_stamina', 'horse_dirt', 'clean_stats', 'bleed'
+])
 const isSpecialType = computed(() => SPECIAL_TYPES.has(props.type))
 
 const ICON_CLASS_MAP = { default: 'fa-solid fa-circle' }
 const STAT_TYPES = new Set([])
 const ICONLESS_TYPES = new Set(['messages', 'clean_stats'])
-const PULSE_TYPES = new Set(['health', 'stamina', 'hunger', 'thirst', 'stress', 'clean_stats', 'bleed'])
-const PULSE_EFFECTS = new Set(['starving', 'parched', 'stressed', 'drained', 'dirty', 'bleeding'])
+
+// [แก้ไข] เพิ่มหมวดม้า (horse_...) ลงไป เพื่อให้เด้งได้
+const PULSE_TYPES = new Set([
+  'health', 'stamina', 'hunger', 'thirst', 'stress', 'clean_stats', 'bleed',
+  'horse_health', 'horse_stamina', 'horse_dirt'
+])
+const PULSE_EFFECTS = new Set(['starving', 'parched', 'stressed', 'drained', 'dirty', 'bleeding', 'horse_dirty', 'wounded'])
 
 const ICON_IMAGE_MAP = {
   health: { default: 'cores/icon/heart.png' },
@@ -34,7 +43,7 @@ const ICON_IMAGE_MAP = {
   /*temperature: {
     cold: 'cores/icon/temp_cold.png',
     hot: 'cores/icon/temp_hot.png',
-    default: 'cores/icon/temp_cold.png'
+    default: 'cores/icon/temp_hot.png'
   },*/
   temperature_value: {
     cold: 'cores/icon/temp_cold.png',
@@ -122,11 +131,8 @@ const computeVoiceAccent = (percent) => {
 
 const accentColor = computed(() => {
   if (props.type === 'logo') return '#ffffff'
-  if (props.type === 'voice') {
-    const meta = voiceMeta.value
-    if (meta?.talking) {
-      return computeVoiceAccent(meta.proximityPercent) || paletteEntry.value.accent
-    }
+  if (props.type === 'voice' && voiceMeta.value?.talking) {
+    return computeVoiceAccent(voiceMeta.value.proximityPercent) || paletteEntry.value.accent
   }
   return paletteEntry.value.accent
 })
@@ -137,14 +143,10 @@ const trackColor = computed(() => {
   return paletteEntry.value.track
 })
 
-// [แก้ไข] ลบเงื่อนไขที่เปลี่ยนสีพื้นหลังตอนพูดออก เพื่อให้ใช้สีปกติ (โปร่งแสง) ตลอดเวลา
 const backgroundColor = computed(() => {
   if (props.type === 'logo') return 'transparent'
   
-  // [ลบบรรทัดนี้ออก] if (props.type === 'voice' && voiceMeta.value?.talking) return 'rgba(12, 18, 28, 0.9)'
-  
   const bg = paletteEntry.value.background
-  // ถ้าสีเป็น #0c1018 (ค่า Default ดั้งเดิม) ให้บังคับใช้สีโปร่งแสงแทน
   if (bg === '#0c1018') {
     return 'rgba(12, 16, 24, 0.5)' 
   }
@@ -178,6 +180,13 @@ const shouldPulse = computed(() => {
 })
 
 const percentLabel = computed(() => {
+  // [แก้ไข] ถ้าเป็นประเภทเหล่านี้ ให้ส่งค่าว่างกลับไปเลย (ไม่โชว์เลข/ข้อความ)
+  const HIDDEN_TEXT_TYPES = new Set([
+    'horse_health', 'horse_stamina', 'horse_dirt', 'clean_stats', 'bleed'
+  ])
+  if (HIDDEN_TEXT_TYPES.has(props.type)) return ''
+
+  // Logic เดิมสำหรับตัวอื่น (เช่น Voice/Temp/HP)
   if (typeof props.effectNext === 'string' && props.effectNext.length > 0) return props.effectNext
   if (isSpecialType.value) return ''
   return `${Math.round(outerPercent.value)}%`
@@ -287,7 +296,7 @@ const iconAnimClasses = computed(() => {
   align-items: center;
   justify-content: center;
   position: relative;
-  background-color: var(--box-bg); /* สีพื้นหลังนิ่ง ไม่เปลี่ยนตามการพูดแล้ว */
+  background-color: var(--box-bg);
   border: none;
   border-radius: 2px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
