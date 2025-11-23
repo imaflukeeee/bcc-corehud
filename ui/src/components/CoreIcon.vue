@@ -14,7 +14,7 @@ const props = defineProps({
   meta: { type: Object, default: null }
 })
 
-// [แก้ไข] เพิ่ม 5 หมวดนี้ลงไป เพื่อให้เป็นแบบ "ไม่มีหลอด" (Icon Only)
+// [แก้ไข] เพิ่ม 'bleed' ลงไปในกลุ่มนี้ เพื่อให้แสดงแค่กล่องไอคอน (ไม่มีหลอด)
 const SPECIAL_TYPES = new Set([
   'voice', 'temperature', 'temperature_value', 'messages',
   'horse_health', 'horse_stamina', 'horse_dirt', 'clean_stats', 'bleed'
@@ -25,12 +25,12 @@ const ICON_CLASS_MAP = { default: 'fa-solid fa-circle' }
 const STAT_TYPES = new Set([])
 const ICONLESS_TYPES = new Set(['messages', 'clean_stats'])
 
-// [แก้ไข] เพิ่มหมวดม้า (horse_...) ลงไป เพื่อให้เด้งได้
+// คง 'bleed' ไว้ในรายการเด้ง (Pulse)
 const PULSE_TYPES = new Set([
   'health', 'stamina', 'hunger', 'thirst', 'stress', 'clean_stats', 'bleed',
-  'horse_health', 'horse_stamina', 'horse_dirt'
+  'horse_health', 'horse_stamina', 'horse_dirt', 'messages'
 ])
-const PULSE_EFFECTS = new Set(['starving', 'parched', 'stressed', 'drained', 'dirty', 'bleeding', 'horse_dirty', 'wounded'])
+const PULSE_EFFECTS = new Set(['starving', 'parched', 'stressed', 'drained', 'dirty', 'bleeding', 'horse_dirty', 'wounded', 'new_message'])
 
 const ICON_IMAGE_MAP = {
   health: { default: 'cores/icon/heart.png' },
@@ -130,6 +130,7 @@ const computeVoiceAccent = (percent) => {
 }
 
 const accentColor = computed(() => {
+  // [แก้ไข] ลบเงื่อนไขสี bleed ออก (เพราะไม่มีหลอดแล้ว)
   if (props.type === 'logo') return '#ffffff'
   if (props.type === 'voice' && voiceMeta.value?.talking) {
     return computeVoiceAccent(voiceMeta.value.proximityPercent) || paletteEntry.value.accent
@@ -180,13 +181,12 @@ const shouldPulse = computed(() => {
 })
 
 const percentLabel = computed(() => {
-  // [แก้ไข] ถ้าเป็นประเภทเหล่านี้ ให้ส่งค่าว่างกลับไปเลย (ไม่โชว์เลข/ข้อความ)
+  // [คงเดิม] ซ่อน Text สำหรับ bleed ด้วย
   const HIDDEN_TEXT_TYPES = new Set([
     'horse_health', 'horse_stamina', 'horse_dirt', 'clean_stats', 'bleed'
   ])
   if (HIDDEN_TEXT_TYPES.has(props.type)) return ''
 
-  // Logic เดิมสำหรับตัวอื่น (เช่น Voice/Temp/HP)
   if (typeof props.effectNext === 'string' && props.effectNext.length > 0) return props.effectNext
   if (isSpecialType.value) return ''
   return `${Math.round(outerPercent.value)}%`

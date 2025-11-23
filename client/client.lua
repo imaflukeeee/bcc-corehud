@@ -1965,20 +1965,22 @@ CreateThread(function()
 					end
 				end
 
-				local messagesInner, messagesOuter, messagesEffectNext
-				if Config.EnableMailboxCore and mailboxCount and mailboxCount > 0 then
-					local count = math.floor(mailboxCount + 0.5)
-					local pct
-					if C.mailboxMaxMessages > 0 then
-						local capped = math.min(count, C.mailboxMaxMessages)
-						pct = (capped / C.mailboxMaxMessages) * 100.0
-					else
-						pct = 100.0
-					end
-					messagesInner = toCoreState(pct)
-					messagesOuter = toCoreMeter(pct)
-					messagesEffectNext = tostring(count)
-				end
+				local messagesInner, messagesOuter, messagesEffectNext, messagesInside
+				if Config.EnableMailboxCore then
+                    local count = (mailboxCount and mailboxCount > 0) and math.floor(mailboxCount + 0.5) or 0
+                    
+                    -- กำหนดให้แสดงผลตลอดเวลา (Active)
+                    messagesInner = 15
+                    messagesOuter = 99
+                    
+                    -- ส่งตัวเลขจำนวนข้อความ (เช่น 0, 1, 5)
+                    messagesEffectNext = tostring(count)
+
+                    -- ถ้ามีข้อความมากกว่า 0 ให้ส่ง effect ไปสั่งให้เด้ง
+                    if count > 0 then
+                        messagesInside = 'new_message'
+                    end
+                end
 
 				local cleanInner, cleanOuter, cleanNext, cleanInside
 				if Config.EnableCleanStatsCore then
@@ -2181,7 +2183,7 @@ CreateThread(function()
 
 					innermessages                 = messagesInner,
 					outermessages                 = messagesOuter,
-					effect_messages_inside        = nil,
+					effect_messages_inside        = messagesInside,
 					effect_messages_next          = messagesEffectNext,
 
 					innervoice                    = voice and voice.inner or nil,
