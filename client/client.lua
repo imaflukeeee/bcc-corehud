@@ -1922,18 +1922,23 @@ CreateThread(function()
                 local tempValNext = tostring(round(worldTemp)) .. '°'
 
 				local horseDirtInner, horseDirtOuter, horseDirtInside = nil, nil, nil
-				if horse ~= 0 then
-					local rank = getAttributeBaseRankSafe(horse, 16)
-					devPrint('Horse cleanliness rank', rank)
-					local dirtyThreshold = Config.HorseDirtyThreshold
-					if dirtyThreshold ~= false then
-						dirtyThreshold = tonumber(dirtyThreshold) or 0
-						if dirtyThreshold < 0 then dirtyThreshold = 0 end
-					end
-				if dirtyThreshold ~= false and rank >= dirtyThreshold then
-					horseDirtInner, horseDirtOuter, horseDirtInside = 15, 99, "horse_dirty"
-				end
-			end
+                if horse ~= 0 then
+                    -- 1. สั่งให้แสดงผลตลอดเวลาเมื่อขี่ม้า (Show Always)
+                    horseDirtInner, horseDirtOuter = 15, 99
+
+                    -- 2. เช็คความสกปรก (เพื่อส่ง Effect เด้ง)
+                    local rank = getAttributeBaseRankSafe(horse, 16)
+                    local dirtyThreshold = Config.HorseDirtyThreshold
+                    if dirtyThreshold ~= false then
+                        dirtyThreshold = tonumber(dirtyThreshold) or 0
+                        if dirtyThreshold < 0 then dirtyThreshold = 0 end
+                        
+                        -- ถ้าสกปรกเกินเกณฑ์ ให้ส่ง effect 'horse_dirty' ไปสั่งให้ไอคอนเด้ง
+                        if rank >= dirtyThreshold then
+                            horseDirtInside = "horse_dirty"
+                        end
+                    end
+                end
 
 				local voice
 				if Config.EnableVoiceCore then
