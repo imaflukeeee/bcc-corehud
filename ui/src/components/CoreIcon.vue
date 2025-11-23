@@ -14,10 +14,11 @@ const props = defineProps({
   meta: { type: Object, default: null }
 })
 
-// [แก้ไข] เพิ่ม 'bleed' ลงไปในกลุ่มนี้ เพื่อให้แสดงแค่กล่องไอคอน (ไม่มีหลอด)
+// [แก้ไข] เพิ่ม 'stress' ลงไป เพื่อให้แสดงแค่กล่องไอคอน (ไม่มีหลอด)
 const SPECIAL_TYPES = new Set([
   'voice', 'temperature', 'temperature_value', 'messages',
-  'horse_health', 'horse_stamina', 'horse_dirt', 'clean_stats', 'bleed'
+  'horse_health', 'horse_stamina', 'horse_dirt', 'clean_stats', 'bleed',
+  'stress'
 ])
 const isSpecialType = computed(() => SPECIAL_TYPES.has(props.type))
 
@@ -25,12 +26,15 @@ const ICON_CLASS_MAP = { default: 'fa-solid fa-circle' }
 const STAT_TYPES = new Set([])
 const ICONLESS_TYPES = new Set(['messages', 'clean_stats'])
 
-// คง 'bleed' ไว้ในรายการเด้ง (Pulse)
+// รายการที่เด้งได้ (Stress มีอยู่แล้ว)
 const PULSE_TYPES = new Set([
   'health', 'stamina', 'hunger', 'thirst', 'stress', 'clean_stats', 'bleed',
   'horse_health', 'horse_stamina', 'horse_dirt', 'messages'
 ])
-const PULSE_EFFECTS = new Set(['starving', 'parched', 'stressed', 'drained', 'dirty', 'bleeding', 'horse_dirty', 'wounded', 'new_message'])
+const PULSE_EFFECTS = new Set([
+  'starving', 'parched', 'stressed', 'drained', 'dirty', 'bleeding', 
+  'horse_dirty', 'wounded', 'new_message'
+])
 
 const ICON_IMAGE_MAP = {
   health: { default: 'cores/icon/heart.png' },
@@ -40,17 +44,19 @@ const ICON_IMAGE_MAP = {
   stress: { default: 'cores/icon/brain.png' },
   messages: { default: 'cores/icon/letter.png' },
   voice: { default: 'cores/icon/talking.png' },
-  /*temperature: {
+  
+  /* temperature: {
     cold: 'cores/icon/temp_cold.png',
     hot: 'cores/icon/temp_hot.png',
     default: 'cores/icon/temp_hot.png'
-  },*/
+  }, */
+  
   temperature_value: {
     cold: 'cores/icon/temp_cold.png',
     hot: 'cores/icon/temp_hot.png',
     default: 'cores/icon/temp_cold.png'
   },
-  clean_stats: { default: 'cores/icon/shower.png' },
+  clean_stats: { default: 'cores/icon/shower.png' }, // ใช้ shower.png
   bleed: { default: 'cores/icon/bleed.png' },
   money: { default: 'cores/icon/money.png' },
   gold: { default: 'cores/icon/gold.png' },
@@ -130,7 +136,6 @@ const computeVoiceAccent = (percent) => {
 }
 
 const accentColor = computed(() => {
-  // [แก้ไข] ลบเงื่อนไขสี bleed ออก (เพราะไม่มีหลอดแล้ว)
   if (props.type === 'logo') return '#ffffff'
   if (props.type === 'voice' && voiceMeta.value?.talking) {
     return computeVoiceAccent(voiceMeta.value.proximityPercent) || paletteEntry.value.accent
@@ -181,9 +186,10 @@ const shouldPulse = computed(() => {
 })
 
 const percentLabel = computed(() => {
-  // [คงเดิม] ซ่อน Text สำหรับ bleed ด้วย
+  // [แก้ไข] เพิ่ม 'stress' ลงไปในรายการซ่อน Text
   const HIDDEN_TEXT_TYPES = new Set([
-    'horse_health', 'horse_stamina', 'horse_dirt', 'clean_stats', 'bleed'
+    'horse_health', 'horse_stamina', 'horse_dirt', 'clean_stats', 'bleed',
+    'stress'
   ])
   if (HIDDEN_TEXT_TYPES.has(props.type)) return ''
 

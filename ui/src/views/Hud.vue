@@ -304,7 +304,7 @@ const CORE_MAP = {
     outer: 'outerhorse_dirt',
     effectInside: 'effect_horse_dirt_inside',
     effectNext: 'effect_horse_dirt_next',
-    requireEffect: true
+    //requireEffect: true
   },
   temperature: {
     inner: 'innertemperature',

@@ -1925,15 +1925,13 @@ CreateThread(function()
                 if horse ~= 0 then
                     -- 1. สั่งให้แสดงผลตลอดเวลาเมื่อขี่ม้า (Show Always)
                     horseDirtInner, horseDirtOuter = 15, 99
-
-                    -- 2. เช็คความสกปรก (เพื่อส่ง Effect เด้ง)
+                    -- 2. เช็คความสกปรก
                     local rank = getAttributeBaseRankSafe(horse, 16)
                     local dirtyThreshold = Config.HorseDirtyThreshold
                     if dirtyThreshold ~= false then
                         dirtyThreshold = tonumber(dirtyThreshold) or 0
                         if dirtyThreshold < 0 then dirtyThreshold = 0 end
-                        
-                        -- ถ้าสกปรกเกินเกณฑ์ ให้ส่ง effect 'horse_dirty' ไปสั่งให้ไอคอนเด้ง
+                        -- 3. ถ้าสกปรกเกินเกณฑ์ ให้ส่ง effect 'horse_dirty' (เพื่อให้มันเด้ง)
                         if rank >= dirtyThreshold then
                             horseDirtInside = "horse_dirty"
                         end
