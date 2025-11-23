@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from 'node:url'
-
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
@@ -8,13 +7,15 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
-  base: './',
+  base: './', // สำคัญ: ให้ใช้ path แบบ relative
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-    build: {
-    chunkSizeWarningLimit: 1000 // increase limit from 500 KB to 1 MB
+  build: {
+    outDir: '../web',    // [สำคัญ] สั่งให้ Build ไปที่โฟลเดอร์ web ด้านนอกโฟลเดอร์ ui
+    emptyOutDir: true,   // [แนะนำ] ลบไฟล์ในโฟลเดอร์ web ทิ้งทุกครั้งก่อน Build ใหม่ (กันไฟล์เก่าค้าง)
+    chunkSizeWarningLimit: 1000
   }
 })

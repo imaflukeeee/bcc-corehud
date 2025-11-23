@@ -31,11 +31,11 @@ server_script {
     'server/server.lua'
 }
 
-ui_page 'ui/index.html'
+ui_page 'web/index.html'
 
 files {
-    "ui/index.html",
-    "ui/**/*"
+    "web/index.html",
+    "web/**/*"
 }
 
 version '1.9.0'
