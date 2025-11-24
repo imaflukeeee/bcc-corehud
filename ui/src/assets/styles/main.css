@@ -1,3 +1,282 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ui/src/assets/styles/main.css */
+@import url('https://fonts.googleapis.com/css2?family=Pridi:wght@300;400;500;600&display=swap');
+
+:root {
+  --font-main: "Pridi", sans-serif;
+  --bg-app: rgba(10, 10, 10, 0.95); /* พื้นหลังเข้มเกือบดำ */
+  --bg-panel: rgba(255, 255, 255, 0.03); /* สีพื้นการ์ด */
+  --bg-panel-hover: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: #ffffff; /* สีขาวเด่น */
+  --text-primary: #e0e0e0;
+  --text-secondary: #808080;
+  --radius-l: 12px;
+  --radius-m: 8px;
+  --radius-s: 4px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-main) !important;
+  user-select: none;
+}
+
+body, html, #app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* --- Container หลัก (Overlay) --- */
+.settings-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4); /* ฉากหลังมืดลงเล็กน้อย */
+  z-index: 9999;
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* --- กล่องเมนู (Window) --- */
+.settings-window {
+  width: 900px;
+  height: 600px;
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-l);
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+/* --- Sidebar ด้านซ้าย --- */
+.sidebar {
+  width: 220px;
+  background: rgba(0,0,0,0.2);
+  border-right: 1px solid var(--border);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: var(--radius-m);
+  transition: all 0.2s;
+  margin-bottom: 5px;
+}
+
+.nav-btn:hover {
+  background: var(--bg-panel);
+  color: var(--text-primary);
+}
+
+.nav-btn.active {
+  background: var(--accent);
+  color: #000; /* ตัวหนังสือดำบนพื้นขาว */
+  font-weight: 600;
+}
+
+.footer-actions {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* --- Content ด้านขวา --- */
+.content-area {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* --- Cards (กล่องเนื้อหา) --- */
+.option-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-m);
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: 0.2s;
+}
+
+.option-card:hover {
+  background: var(--bg-panel-hover);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.option-info h3 {
+  font-size: 16px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+.option-info p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* --- Buttons --- */
+.btn {
+  padding: 10px 16px;
+  border-radius: var(--radius-m);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-panel);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn:hover {
+  background: var(--bg-panel-hover);
+  border-color: rgba(255, 255, 255, 0.3); /* สว่างขึ้นนิดหน่อย */
+}
+
+.btn {
+  padding: 10px 16px;
+  border-radius: var(--radius-m);
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* --- ปรับแก้ปุ่ม Save และ Close ให้ใช้สไตล์เดียวกันตามที่ขอ --- */
+
+.btn-save,
+.btn-close {
+  width: 100%;
+  background: transparent;       /* ปกติ: พื้นหลังใส */
+  color: var(--text-secondary);  /* ปกติ: สีเทาเข้ม */
+  border: 1px solid var(--border);
+  font-weight: 600;              /* กำหนดความหนาไว้เลย เพื่อไม่ให้ตัวอักษรกระตุกตอน Hover */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* เมื่อ Hover (ทั้งสองปุ่มจะเปลี่ยนเป็นแบบ Save ที่คุณต้องการ) */
+.btn-save:hover,
+.btn-close:hover {
+  background: var(--accent);     /* พื้นหลังสีขาว (Accent) */
+  color: #000000;                /* ตัวหนังสือสีดำ */
+  border-color: var(--accent);   
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); /* เรืองแสงฟุ้งๆ */
+  transform: translateY(-1px);   /* ลอยขึ้นเล็กน้อย */
+}
+
+/* --- Color Sliders (Palette) --- */
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.color-control {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  padding: 15px;
+  border-radius: var(--radius-m);
+}
+
+.color-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.color-preview {
+  width: 24px; 
+  height: 24px; 
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Custom Range Input */
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.1s;
+}
+input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
