@@ -3,6 +3,14 @@ import { ref, onMounted, onBeforeUnmount, provide, readonly, computed, watch, ne
 import CoreSlot from '@/components/CoreSlot.vue'
 import api from '@/api'
 
+/* -------------------------------------------------------------------------
+   CONFIG PRESET: เลือกรูปแบบการจัดวางที่นี่
+   1 = ซ้ายล่าง (Left)
+   2 = กลางล่าง (Center)
+   3 = ขวาล่าง (Right)
+------------------------------------------------------------------------- */
+const LAYOUT_PRESET = 2; 
+
 const DEFAULT_SLOT = Object.freeze({
   inner: 15,
   outer: 99,
@@ -68,21 +76,21 @@ const palette = ref(createDefaultPalette())
 
 provide('palette', readonly(palette))
 
+// --- 1. แก้ไขลำดับ SLOT_ORDER ตามที่ต้องการ ---
 const SLOT_ORDER = Object.freeze([
-  'health',
-  'stamina',
-  'hunger',
-  'thirst',
-  'stress',
-  'bleed',
-  'messages',
-  'clean_stats',
-  'voice',
-  'horse_health',
-  'horse_stamina',
-  'horse_dirt',
-  //'temperature',
-  'temperature_value'
+  'health',           // 1. Bar
+  'stamina',          // 2. Bar
+  'hunger',           // 3. Bar
+  'thirst',           // 4. Bar
+  'stress',           // 5. Bar
+  'bleed',            // 6. Icon
+  'clean_stats',      // 7. Icon
+  'temperature_value',// 8. Value
+  'voice',            // 9. Icon
+  'messages',         // 10. Icon
+  'horse_health',     // 11. Icon
+  'horse_stamina',    // 12. Icon
+  'horse_dirt'        // 13. Icon
 ])
 
 const SLOT_LABELS = Object.freeze({
@@ -116,17 +124,32 @@ const clampPercentValue = (value) => {
   return value
 }
 
+// --- 3. แก้ไข Logic การจัดวาง Default สำหรับ Edit Mode (Fallback Layout) ---
 const createFallbackLayout = () => {
-  const spacing = 7.0
-  const baseX = 12
-  const baseY = 50
-  const start = baseY - ((SLOT_ORDER.length - 1) * spacing) / 2
+  const spacing = 2.75 // ระยะห่างแนวนอน (vw)
+  const count = SLOT_ORDER.length
+  
+  // กำหนดค่าเริ่มต้นตาม Preset
+  let startX = 2; // Default Left
+  const constantY = 99; // ความสูงจากด้านบน (92% = อยู่ด้านล่าง)
+
+  if (LAYOUT_PRESET === 2) { // Center
+     // คำนวณจุดเริ่มเพื่อให้กึ่งกลางจอ (50 - ครึ่งหนึ่งของความยาวรวม)
+     const totalWidth = (count - 1) * spacing;
+     startX = 50 - (totalWidth / 2);
+  } else if (LAYOUT_PRESET === 3) { // Right
+     // เริ่มจากด้านขวา (98 - ความยาวรวม)
+     const totalWidth = (count - 1) * spacing;
+     startX = 98 - totalWidth;
+  }
+
   const result = {}
   SLOT_ORDER.forEach((slot, index) => {
-    const percentY = clampPercentValue(start + index * spacing)
+    // แนวนอน: X เปลี่ยนไปเรื่อยๆ, Y คงที่
+    const percentX = clampPercentValue(startX + (index * spacing))
     result[slot] = {
-      x: roundToThree(clampPercentValue(baseX)),
-      y: roundToThree(percentY)
+      x: roundToThree(percentX),
+      y: roundToThree(constantY)
     }
   })
   return result
@@ -144,6 +167,13 @@ const layoutHasEntries = computed(() => Object.keys(layoutPositions.value).lengt
 const useAbsoluteLayout = computed(() => layoutEditing.value || layoutHasEntries.value)
 const draggingType = computed(() => dragState.value?.type ?? null)
 const canSaveLayout = computed(() => layoutEditing.value)
+
+// Helper สำหรับเลือก Class ตาม Preset
+const presetClass = computed(() => {
+  if (LAYOUT_PRESET === 2) return 'layout-center'
+  if (LAYOUT_PRESET === 3) return 'layout-right'
+  return 'layout-left'
+})
 
 const slotRefs = new Map()
 const setSlotRef = (type, el) => {
@@ -728,7 +758,7 @@ watch(layoutEditing, async (editing) => {
         <CoreSlot :type="type" />
       </div>
     </div>
-    <div v-else class="core-layout-row">
+    <div v-else class="core-layout-row" :class="presetClass">
       <div
         v-for="type in SLOT_ORDER"
         :key="type"
@@ -759,13 +789,36 @@ watch(layoutEditing, async (editing) => {
 
 .core-layout-row {
   position: absolute;
-  bottom: 4vh;
+  bottom: 1vh;
   display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
+  flex-direction: row; /* เปลี่ยนเป็นแนวนอน */
+  gap: 0.25rem;
   pointer-events: none;
-  align-items: flex-start;
+  align-items: flex-end; /* จัดให้ชิดล่างกันในแนวนอน */
 }
+
+/* --- PRESET STYLES --- */
+/* Preset 1: ซ้ายล่าง (แนวนอน) */
+.layout-left {
+  left: 2vw;
+  right: auto;
+  transform: none;
+}
+
+/* Preset 2: กลางล่าง (แนวนอน) */
+.layout-center {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+/* Preset 3: ขวาล่าง (แนวนอน) */
+.layout-right {
+  left: auto;
+  right: 2vw;
+  transform: none;
+}
+/* --------------------- */
 
 .core-slot-inline {
   pointer-events: none;
