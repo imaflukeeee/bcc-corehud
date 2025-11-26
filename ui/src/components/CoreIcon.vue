@@ -334,11 +334,10 @@ const iconAnimClasses = computed(() => {
   color: #fff;
   white-space: nowrap;
   text-shadow: 
-    -1px -1px 0 #000,  
-     1px -1px 0 #000,
-    -1px  1px 0 #000,
-     1px  1px 0 #000,
-     0 0 4px rgba(0,0,0,0.8);
+    -0.5px -0.5px 0 #000,  
+     0.5px -0.5px 0 #000,
+    -0.5px  0.5px 0 #000,
+     0.5px  0.5px 0 #000;
   pointer-events: none;
   z-index: 10;
 }

@@ -1501,7 +1501,7 @@ local function cycleVoiceStep(dir)
 	applyVoiceStep(voiceStepIndex + (dir or 1), false)
 end
 
-CreateThread(function()
+--[[CreateThread(function()
 	local debounceMs, last = 0, 180
 	while true do
 		Wait(0)
@@ -1515,7 +1515,7 @@ CreateThread(function()
 		end
 		::continue::
 	end
-end)
+end)]]
 
 local lastPersistTick, lastPersistedSnapshot = 0, nil
 function RequestLayoutFromServer()
@@ -1533,28 +1533,6 @@ end
 local function truthy(v) return v == true or v == 1 or v == -1 end
 
 local menuVisible = false -- temporarily disabled below event hooks
-
---[[
--- VORP menu support
-AddEventHandler('vorp_menu:openmenu', function()
-	menuVisible = true
-end)
-
-AddEventHandler('vorp_menu:closemenu', function()
-	menuVisible = false
-end)
-
--- Feather menu support (fires for any Feather menu)
-AddEventHandler('FeatherMenu:opened', function(event)
-	if event.menuid == 'bcc:corehud:mainmenu' then return end
-	menuVisible = true
-end)
-
-AddEventHandler('FeatherMenu:closed', function(event)
-	if event.menuid == 'bcc:corehud:mainmenu' then return end
-	menuVisible = false
-end)
-]]
 
 CreateThread(function()
 	local lastSuppressed = nil

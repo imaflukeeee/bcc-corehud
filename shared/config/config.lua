@@ -79,7 +79,7 @@ Config.EnableMailboxCore        = true         -- แสดง Core ข้อค
 Config.MailboxMaxMessages       = 10            -- จำนวนที่ทำให้วงแหวนเต็ม (10 ข้อความที่ยังไม่อ่าน = เต็ม)
 Config.MailboxUpdateInterval    = 30000         -- ความถี่ในการรีเฟรชจำนวนจากเซิร์ฟเวอร์ (มิลลิวินาที)
 
-Config.Notify                   = "feather-menu"
+Config.Notify                   = "vorp-core"
 
 -- ตัวบ่งชี้ค่าความสะอาด
 Config.EnableCleanStatsCore     = true  -- แสดง Core ความสะอาดเมื่อเป็น true
